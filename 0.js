@@ -83,8 +83,11 @@ sleep(2000);
 //     b = a;
 //     fInfo("循环滑动中")
 // }
-fInfo("点击推荐按钮");
-text("推荐").findOne().click();
+fInfo("尝试点击推荐按钮");
+if(text("推荐").exists()){
+    text("推荐").findOne().click();
+    console.log("刷新任务列表成功")
+}
 sleep(1000);
 //推荐转发任务
 for (let i = 0; ; i++) {
