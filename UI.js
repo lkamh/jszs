@@ -78,7 +78,7 @@ ui.start.click(function () {
     jszs.put("tjzf", ui.cb1.isChecked());
     jszs.put("zlpl", ui.cb2.isChecked());
     threads.start(function () {
-        execution = engines.execScript("记事助手", getScript(checktext));//直接下载0.js
+        execution = engines.execScript("记事助手", getScript(0));//直接下载0.js
         toastLog('脚本加载完成')
     });
 });
