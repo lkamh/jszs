@@ -9,6 +9,7 @@ if (fast_mode) {
 events.observeToast();//开启 Toast 监听，Toast 监听依赖于无障碍服务，因此此函数会确保无障碍服务运行
 sleep(delay_time);//暂停3秒
 var is_exit = false;//运行前退出app
+var jszs = storages.create("jszs");//加载存储
 var tjzf = jszs.get("tjzf",true);
 var zlpl = jszs.get("zlpl",true);
 
@@ -17,7 +18,6 @@ var zlpl = jszs.get("zlpl",true);
 
 
 
-var jszs = storages.create("jszs");//加载存储
 sleep(1000);
 
 var w = fInit();
