@@ -67,9 +67,9 @@ text("我的").waitFor();
 fInfo("获取任务列表")
 
 var tasklist = text("下拉刷新").findOne().parent().parent();
-var finishCode = "es1H5Q3OXksdzeyUJT6CrBGRb04xvA+W146fvn3S2T0+EtQ3HxeV8UN8+z1fAvyF8ppZ3C33YqXAAAAAElFTkSuQmCC";
-var a = tasklist.childCount();
-var b = "";
+// var finishCode = "es1H5Q3OXksdzeyUJT6CrBGRb04xvA+W146fvn3S2T0+EtQ3HxeV8UN8+z1fAvyF8ppZ3C33YqXAAAAAElFTkSuQmCC";
+// var a = tasklist.childCount();
+// var b = "";
 sleep(2000);
 // //下拉到最后
 // while (tasklist) {
@@ -83,7 +83,7 @@ sleep(2000);
 //     b = a;
 //     fInfo("循环滑动中")
 // }
-
+fInfo("点击推荐按钮");
 text("推荐").findOne().click();
 sleep(1000);
 //推荐转发任务
