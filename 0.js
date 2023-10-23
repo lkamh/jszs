@@ -63,8 +63,9 @@ sleep(2000);
 
 /*******************运行部分*******************/
 fClear();
-text("我的").waitFor();
-fInfo("获取任务列表")
+fInfo("等待进入主界面");
+text("记事本").waitFor();
+fInfo("获取任务列表");
 
 var tasklist = text("下拉刷新").findOne().parent().parent();
 // var finishCode = "es1H5Q3OXksdzeyUJT6CrBGRb04xvA+W146fvn3S2T0+EtQ3HxeV8UN8+z1fAvyF8ppZ3C33YqXAAAAAElFTkSuQmCC";
