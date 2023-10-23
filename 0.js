@@ -64,7 +64,7 @@ sleep(2000);
 /*******************运行部分*******************/
 fClear();
 fInfo("等待进入主界面");
-text("记事本").waitFor();
+textStartsWith("积分").waitFor();
 fInfo("获取任务列表");
 
 var tasklist = text("下拉刷新").findOne().parent().parent();
