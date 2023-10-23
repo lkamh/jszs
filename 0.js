@@ -49,7 +49,7 @@ device.keepScreenOn(3600 * 1000);
 
 
 if (is_exit) {
-    fInfo("运行前重置学习APP");
+    fInfo("运行前重置记事本APP");
     exit_app("记事本");
     sleep(1500);
     fClear();
@@ -90,6 +90,9 @@ fInfo("尝试点击推荐按钮");
 if(text("推荐").exists()){
     text("推荐").findOne().click();
     console.log("刷新任务列表成功")
+}else{
+    fInfo("点击失败，模拟滑动以更新任务列表")
+    swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
 }
 sleep(1000);
 //推荐转发任务
@@ -98,6 +101,7 @@ for (let i = 0; ; i++) {
     sleep(2000);
     fInfo("正在做第" + (i +1) + "轮转发任务");
     let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
+
     console.log(sharebtn.parent().parent().childCount())
     
     if (sharebtn.parent().parent().parent().childCount() == 5) {
