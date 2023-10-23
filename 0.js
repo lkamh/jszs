@@ -94,7 +94,7 @@ if(text("推荐").exists()){
     fInfo("点击失败，模拟滑动以更新任务列表")
     swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
 }
-sleep(2000);
+sleep(3000);
 //推荐转发任务
 for (let i = 0; ; i++) {
     fClear();

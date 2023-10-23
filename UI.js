@@ -20,8 +20,8 @@ ui.layout(
                     <horizontal gravity="center_vertical" padding="5 20" >
                         <View bg="#3399ff" h="*" w="8"  ></View>
                         <horizontal gravity="center">
-                            <Switch id="autoService" text="  无障碍服务" checked="{{auto.service != null}}" gravity="left" textSize="18sp" />
-                            <Switch id="consoleshow" text="    悬浮窗权限" checked="{{floaty.checkPermission()}}" gravity="right" textSize="18sp" />
+                            <Switch id="autoService" text="  无障碍服务" checked="{{auto.service != null}}" gravity="left" textSize="17sp" />
+                            <Switch id="consoleshow" text="    悬浮窗权限" checked="{{floaty.checkPermission()}}" gravity="right" textSize="17sp" />
                         </horizontal>
                     </horizontal>
                     <vertical gravity="center">
