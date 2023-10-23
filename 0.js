@@ -92,9 +92,9 @@ if(text("推荐").exists()){
     console.log("刷新任务列表成功")
 }else{
     fInfo("点击失败，模拟滑动以更新任务列表")
-    swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
 }
-sleep(1000);
+sleep(2000);
 //推荐转发任务
 for (let i = 0; ; i++) {
     fClear();
