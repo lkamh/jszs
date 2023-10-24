@@ -138,6 +138,66 @@ for (let i = 0; ; i++) {
     }
 }
 
+//专栏评论上传截图任务
+fInfo("刷新任务列表");
+if(text("专栏").exists()){
+    text("专栏").findOne().click();
+    console.log("刷新任务列表成功")
+}else{
+    fInfo("点击失败，模拟滑动以更新任务列表")
+    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
+}
+
+fInfo("获取转发任务数");
+var unloadbtn = text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").find();
+if(unloadbtn.empty()){
+    toast("当前没有要做的任务");
+}else{
+    let unloadNum = unloadbtn.find().size();
+    fInfo("当前有" + unloadNum +"大项未作任务") ;
+    let taskNum = text("待进行").findOne().text().slice(3,-1);
+    fInfo("共有" + taskNum + "小项上传任务")
+}
+for(let i = 0;i <= unloadNum - 1;i++){
+    fClear();
+    text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").findOnce(i).click()
+    fInfo("刷新任务列表")
+    swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
+    className("android.view.View").id("inner-zxz1m").findOne();
+    //循环做任务
+    for (let j = 0; ; j++) {
+        fClear();
+        sleep(2000);
+        while (true) {
+            if (text("待上传").findOne(3000)) {
+                break;
+            }else {
+                swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
+            }
+            if(textStartsWith("待进行").findOne().text().slice(3,-1) = "0"){
+                fInfo("已完成全部任务");
+                back();
+                break
+            }
+        }
+        fInfo("正在做第" + (i +1) + "轮转发任务");
+        let mediaflag = text("待上传").parent().parent().child(0).text();
+        text("待上传").parent().parent().child(2).click();
+        if(mediaflag == "凤凰新闻"){
+            let tasktext = className("android.view.View").id("articleTitle").findOne().child(0).text().substr(0,4);
+            desc("立即打开").findOne().click();
+            tasktext.waitFor();
+            text("我来说两句").findOne().click();
+            
+
+        }
+
+
+
+    }
+
+}
+
 finish();//结束任务
 
 
