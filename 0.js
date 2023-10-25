@@ -104,7 +104,7 @@ if (tjzf) {
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
 
         let listNum = sharebtn.parent().parent().parent().childCount();
-        if(sharebtn.parent().parent().parent().child(1).text() = "置顶"){
+        if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
             listNum = listNum - 1;
         }
 
