@@ -109,13 +109,13 @@ if (tjzf) {
         console.log(sharetext);
         if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
             console.log("正在做置顶任务");
-            listNum = listNum - 1;
+            listNum = listNum - 2;
             console.log("listNum重置为" + listNum);
             sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
             console.log("sharetextm重置为" + sharetext);
         }
 
-        if (sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5) {
+        if ((sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5)||listNum == 5) {
             fInfo("已完成全部转发任务");
             break
         }
