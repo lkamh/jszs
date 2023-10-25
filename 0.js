@@ -108,7 +108,7 @@ if (tjzf) {
             listNum = listNum - 1;
         }
 
-        if (listNum == 4) {
+        if (listNum == 5) {
             fInfo("已完成全部转发任务");
             break
         }
