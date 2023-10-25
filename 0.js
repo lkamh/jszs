@@ -104,16 +104,17 @@ if (tjzf) {
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
 
         let listNum = sharebtn.parent().parent().parent().childCount();
+        
+        let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
         if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
             listNum = listNum - 1;
+            sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
         }
 
         if (listNum == 5) {
             fInfo("已完成全部转发任务");
             break
         }
-
-        let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
         if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
             className("com.uc.webview.export.WebView").waitFor();
             sleep(3000);
@@ -125,7 +126,7 @@ if (tjzf) {
             text("分享").findOne().click();
             text("留在微信").findOne().click();
             text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
-            sleep(1000);
+            sleep(2000);
             textStartsWith(sharetext).findOne().parent().parent().parent().click();
             sleep(1000);
             textStartsWith(sharetext).waitFor();
