@@ -109,10 +109,14 @@ if (tjzf) {
         console.log(sharetext);
         if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
             console.log("正在做置顶任务");
-            listNum = listNum - 2;
+            if(listNum = 7){
+                fInfo("已完成该任务");
+                continue;
+            }
+            listNum = listNum - 1;
             console.log("listNum重置为" + listNum);
             sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
-            console.log("sharetextm重置为" + sharetext);
+            console.log("sharetext重置为" + sharetext);
         }
 
         if ((sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5)||listNum == 5) {
@@ -130,7 +134,7 @@ if (tjzf) {
             text("分享").findOne().click();
             text("留在微信").findOne().click();
             text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
-            sleep(2000);
+            sleep(1000);
             textStartsWith(sharetext).findOne().parent().parent().parent().click();
             sleep(1000);
             textStartsWith(sharetext).waitFor();
