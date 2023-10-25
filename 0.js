@@ -111,7 +111,7 @@ if (tjzf) {
             sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
         }
 
-        if (listNum == 5) {
+        if (sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5) {
             fInfo("已完成全部转发任务");
             break
         }
