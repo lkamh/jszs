@@ -104,11 +104,15 @@ if (tjzf) {
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
 
         let listNum = sharebtn.parent().parent().parent().childCount();
-        
+        console.log(listNum);
         let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
+        console.log(sharetext);
         if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
+            console.log("正在做置顶任务");
             listNum = listNum - 1;
+            console.log("listNum重置为" + listNum);
             sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
+            console.log("sharetextm重置为" + sharetext);
         }
 
         if (sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5) {
