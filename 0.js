@@ -10,8 +10,8 @@ events.observeToast();//开启 Toast 监听，Toast 监听依赖于无障碍服�
 sleep(delay_time);//暂停3秒
 var is_exit = true;//运行前退出app
 var jszs = storages.create("jszs");//加载存储
-var tjzf = jszs.get("tjzf",true);
-var zlpl = jszs.get("zlpl",true);
+var tjzf = jszs.get("tjzf", true);
+var zlpl = jszs.get("zlpl", true);
 
 
 /*****************更新内容弹窗部分*****************/
@@ -69,7 +69,7 @@ fInfo("等待进入主界面");
 className("android.widget.ListView").waitFor();
 fInfo("获取任务列表");
 
-var tasklist = text("下拉刷新").findOne().parent().parent();
+// var tasklist = text("下拉刷新").findOne().parent().parent();
 // var finishCode = "es1H5Q3OXksdzeyUJT6CrBGRb04xvA+W146fvn3S2T0+EtQ3HxeV8UN8+z1fAvyF8ppZ3C33YqXAAAAAElFTkSuQmCC";
 // var a = tasklist.childCount();
 // var b = "";
@@ -86,116 +86,123 @@ sleep(2000);
 //     b = a;
 //     fInfo("循环滑动中")
 // }
-fInfo("尝试点击推荐按钮");
-if(text("推荐").exists()){
-    text("推荐").findOne().click();
-    console.log("刷新任务列表成功")
-}else{
-    fInfo("点击失败，模拟滑动以更新任务列表")
-    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
-}
-sleep(3000);
-//推荐转发任务
-for (let i = 0; ; i++) {
-    fClear();
-    sleep(2000);
-    fInfo("正在做第" + (i +1) + "轮转发任务");
-    let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
-
-    console.log(sharebtn.parent().parent().childCount())
-    
-    if (sharebtn.parent().parent().parent().childCount() == 5) {
-        fInfo("已完成全部转发任务");
-        break
-    }
-
-    let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
-    if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
-        className("com.uc.webview.export.WebView").waitFor();
-        sleep(3000);
-        desc("菜单").findOne().click();
-        sleep(500);
-        desc("分享").findOne().click();
-        text("微信好友").findOne().parent().click();
-        text("文件传输助手").findOne().parent().click();
-        text("分享").findOne().click();
-        text("留在微信").findOne().click();
-        text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
-        sleep(1000);
-        textStartsWith(sharetext).findOne().parent().parent().parent().click();
-        sleep(1000);
-        textStartsWith(sharetext).waitFor();
-        swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
-        sleep(3000);
-        app.launchApp('记事本');
-        sleep(2000)
-        fClear();
-        swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+if (tjzf) {
+    fInfo("尝试点击推荐按钮");
+    if (text("推荐").exists()) {
+        text("推荐").findOne().click();
+        console.log("刷新任务列表成功")
     } else {
-        toastLog("已完成推荐栏目转发任务");
-        finish();
-        break
+        fInfo("点击失败，模拟滑动以更新任务列表")
+        swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
+    }
+    sleep(3000);
+    //推荐转发任务
+    for (let i = 0; ; i++) {
+        fClear();
+        sleep(2000);
+        fInfo("正在做第" + (i + 1) + "轮转发任务");
+        let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
+
+        let listNum = sharebtn.parent().parent().parent().childCount();
+        if(sharebtn.parent().parent().parent().child(1).text() = "置顶"){
+            listNum = listNum - 1;
+        }
+
+        if (listNum == 4) {
+            fInfo("已完成全部转发任务");
+            break
+        }
+
+        let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
+        if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
+            className("com.uc.webview.export.WebView").waitFor();
+            sleep(3000);
+            desc("菜单").findOne().click();
+            sleep(500);
+            desc("分享").findOne().click();
+            text("微信好友").findOne().parent().click();
+            text("文件传输助手").findOne().parent().click();
+            text("分享").findOne().click();
+            text("留在微信").findOne().click();
+            text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
+            sleep(1000);
+            textStartsWith(sharetext).findOne().parent().parent().parent().click();
+            sleep(1000);
+            textStartsWith(sharetext).waitFor();
+            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+            sleep(3000);
+            app.launchApp('记事本');
+            sleep(2000)
+            fClear();
+            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+        } else {
+            toastLog("已完成推荐栏目转发任务");
+            finish();
+            break
+        }
     }
 }
 
 //专栏评论上传截图任务
-fInfo("刷新任务列表");
-if(text("专栏").exists()){
-    text("专栏").findOne().click();
-    console.log("刷新任务列表成功")
-}else{
-    fInfo("点击失败，模拟滑动以更新任务列表")
-    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
-}
-
-fInfo("获取转发任务数");
-var unloadbtn = text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").find();
-if(unloadbtn.empty()){
-    toast("当前没有要做的任务");
-}else{
-    let unloadNum = unloadbtn.find().size();
-    fInfo("当前有" + unloadNum +"大项未作任务") ;
-    let taskNum = text("待进行").findOne().text().slice(3,-1);
-    fInfo("共有" + taskNum + "小项上传任务")
-}
-for(let i = 0;i <= unloadNum - 1;i++){
-    fClear();
-    text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").findOnce(i).click()
-    fInfo("刷新任务列表")
-    swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
-    className("android.view.View").id("inner-zxz1m").findOne();
-    //循环做任务
-    for (let j = 0; ; j++) {
-        fClear();
-        sleep(2000);
-        while (true) {
-            if (text("待上传").findOne(3000)) {
-                break;
-            }else {
-                swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
-            }
-            if(textStartsWith("待进行").findOne().text().slice(3,-1) = "0"){
-                fInfo("已完成全部任务");
-                back();
-                break
-            }
-        }
-        fInfo("正在做第" + (i +1) + "轮转发任务");
-        let mediaflag = text("待上传").parent().parent().child(0).text();
-        text("待上传").parent().parent().child(2).click();
-        if(mediaflag == "凤凰新闻"){
-            let tasktext = className("android.view.View").id("articleTitle").findOne().child(0).text().substr(0,4);
-            desc("立即打开").findOne().click();
-            tasktext.waitFor();
-            text("我来说两句").findOne().click();
-            
-
-        }
-
-
-
+if (zlpl) {
+    fInfo("刷新任务列表");
+    if (text("专栏").exists()) {
+        text("专栏").findOne().click();
+        console.log("刷新任务列表成功")
+    } else {
+        fInfo("点击失败，模拟滑动以更新任务列表")
+        swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
     }
 
+    fInfo("获取转发任务数");
+    var unloadbtn = text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").find();
+    if (unloadbtn.empty()) {
+        toast("当前没有要做的任务");
+    } else {
+        let unloadNum = unloadbtn.find().size();
+        fInfo("当前有" + unloadNum + "大项未作任务");
+        let taskNum = text("待进行").findOne().text().slice(3, -1);
+        fInfo("共有" + taskNum + "小项上传任务")
+    }
+    for (let i = 0; i <= unloadNum - 1; i++) {
+        fClear();
+        text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").findOnce(i).click()
+        fInfo("刷新任务列表")
+        swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
+        className("android.view.View").id("inner-zxz1m").findOne();
+        //循环做任务
+        for (let j = 0; ; j++) {
+            fClear();
+            sleep(2000);
+            while (true) {
+                if (text("待上传").findOne(3000)) {
+                    break;
+                } else {
+                    swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
+                }
+                if (textStartsWith("待进行").findOne().text().slice(3, -1) = "0") {
+                    fInfo("已完成全部任务");
+                    back();
+                    break
+                }
+            }
+            fInfo("正在做第" + (i + 1) + "轮转发任务");
+            let mediaflag = text("待上传").parent().parent().child(0).text();
+            text("待上传").parent().parent().child(2).click();
+            if (mediaflag == "凤凰新闻") {
+                let tasktext = className("android.view.View").id("articleTitle").findOne().child(0).text().substr(0, 4);
+                desc("立即打开").findOne().click();
+                tasktext.waitFor();
+                text("我来说两句").findOne().click();
+
+
+            }
+
+
+
+        }
+
+    }
 }
 
 finish();//结束任务
