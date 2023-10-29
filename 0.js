@@ -155,14 +155,15 @@ if (tjzf) {
 //专栏评论上传截图任务
 if (zlpl) {
     fInfo("刷新任务列表");
-    if (text("专栏").exists()) {
-        text("专栏").findOne().click();
-        console.log("刷新任务列表成功")
-    } else {
-        fInfo("点击失败，模拟滑动以更新任务列表")
+    while (true) {
         swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
+        sleep(2000);
+        if (className("android.view.View").scrollable().findOnce().exists()) {
+            className("android.view.View").scrollable().findOnce().child(1).click();
+            fInfo("刷新任务列表成功");
+            break;
+        }
     }
-
     fInfo("获取转发任务数");
     var unloadbtn = text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").find();
     if (unloadbtn.empty()) {
