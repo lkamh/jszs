@@ -109,7 +109,7 @@ if (tjzf) {
         console.log(sharetext);
         if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
             console.log("正在做置顶任务");
-            if(listNum = 7){
+            if(listNum == 7){
                 fInfo("已完成该任务");
                 continue;
             }
