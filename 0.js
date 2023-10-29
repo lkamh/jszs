@@ -103,7 +103,7 @@ if (tjzf) {
         fInfo("正在做第" + (i + 1) + "轮转发任务");
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
         try {
-            let lisbtn = sharebtn.parent().parent().parent().findOne(2000);
+            let lisbtn = sharebtn.parent().parent().parent();
         } catch (error) {
             fInfo("已完成全部任务")
         }
