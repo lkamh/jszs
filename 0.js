@@ -102,7 +102,11 @@ if (tjzf) {
         sleep(2000);
         fInfo("正在做第" + (i + 1) + "轮转发任务");
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
-
+        try {
+            let lisbtn = sharebtn.parent().parent().parent().findOne(2000);
+        } catch (error) {
+            fInfo("已完成全部任务")
+        }
         let listNum = sharebtn.parent().parent().parent().childCount();
         console.log(listNum);
         let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
