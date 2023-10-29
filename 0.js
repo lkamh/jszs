@@ -87,14 +87,24 @@ sleep(2000);
 //     fInfo("循环滑动中")
 // }
 if (tjzf) {
-    fInfo("尝试点击推荐按钮");
-    if (text("推荐").exists()) {
-        text("推荐").findOne().click();
-        console.log("刷新任务列表成功")
-    } else {
-        fInfo("点击失败，模拟滑动以更新任务列表")
+    // fInfo("尝试点击推荐按钮");
+    fInfo("刷新任务列表");
+    while (true) {
         swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
+        sleep(2000);
+        if (className("android.view.View").scrollable().findOnce().exists()) {
+            className("android.view.View").scrollable().findOnce().child(0).click();
+            fInfo("刷新任务列表成功");
+            break;
+        }
     }
+    // if (text("推荐").exists()) {
+    //     text("推荐").findOne().click();
+    //     console.log("刷新任务列表成功")
+    // } else {
+    //     fInfo("点击失败，模拟滑动以更新任务列表")
+    //     swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
+    // }
     sleep(3000);
     //推荐转发任务
     for (let i = 0; ; i++) {
