@@ -89,15 +89,11 @@ sleep(2000);
 if (tjzf) {
     // fInfo("尝试点击推荐按钮");
     fInfo("刷新任务列表");
-    while (true) {
-        swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
-        sleep(2000);
-        if (className("android.view.View").scrollable().findOnce().exists()) {
-            className("android.view.View").scrollable().findOnce().child(0).click();
-            fInfo("刷新任务列表成功");
-            break;
-        }
-    }
+    text("统计").findOne().parent().parent().click();
+    sleep(2000);
+    text("toutiao_active.dc06fc8").findOne().parent().parent().click();
+    let task_zf = text("toutiao_active.dc06fc8").findOne().parent().child(1).text();
+    toastLog("检测到" + task_zf + "个未做任务")
     // if (text("推荐").exists()) {
     //     text("推荐").findOne().click();
     //     console.log("刷新任务列表成功")
