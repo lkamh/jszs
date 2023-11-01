@@ -91,8 +91,8 @@ if (tjzf) {
     fInfo("刷新任务列表");
     text("统计").findOne().parent().parent().click();
     sleep(2000);
-    text("toutiao_active.dc06fc8").findOne().parent().parent().click();
-    let task_zf = text("toutiao_active.dc06fc8").findOne().parent().child(1).text();
+    textStartsWith("toutiao").findOne().parent().parent().click();
+    let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
     toastLog("检测到" + task_zf + "个未做任务")
     // if (text("推荐").exists()) {
     //     text("推荐").findOne().click();
@@ -110,10 +110,10 @@ if (tjzf) {
         let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
         try {
             let lisbtn = sharebtn.parent().parent().parent();
+            var listNum = sharebtn.parent().parent().parent().childCount();
         } catch (error) {
             fInfo("已完成全部任务")
         }
-        let listNum = sharebtn.parent().parent().parent().childCount();
         console.log(listNum);
         let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
         console.log(sharetext);
@@ -148,6 +148,7 @@ if (tjzf) {
             textStartsWith(sharetext).findOne().parent().parent().parent().click();
             sleep(1000);
             textStartsWith(sharetext).waitFor();
+            sleep(500);
             swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
             sleep(3000);
             app.launchApp('记事本');
@@ -224,7 +225,10 @@ if (zlpl) {
 
     }
 }
-
+if(tjzf){
+    textStartsWith("toutiao").findOne().parent().parent().click();
+    sleep(2000);
+}
 finish();//结束任务
 
 
