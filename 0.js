@@ -59,14 +59,27 @@ fInfo("跳转记事本APP");
 // launch('cn.xuexi.android');
 app.launchApp('记事本');
 sleep(2000);
+fInfo("开启登录界面检测");
+var nologin_thread = threads.start(function () {
+    //在新线程执行的代码
+    textContains("登录解锁").waitFor();
+    fInfo("检测到登录验证界面");
+    sleep(1000);
+    fInfo("自动点击发送验证码");
+    desc("发送验证码").findOne().click();
+    text("我同意").click();
+  });
 
 
 /*******************运行部分*******************/
+className("android.widget.ListView").waitFor();
+sleep(2000);
+className("android.widget.ListView").waitFor();
 fClear();
+nologin_thread.isAlive() && (nologin_thread.interrupt(), fInfo("终止位置权限弹窗检测"));
 fInfo("等待进入主界面");
 // textStartsWith("积分").waitFor();
 // sleep(2000);
-className("android.widget.ListView").waitFor();
 fInfo("获取任务列表");
 
 // var tasklist = text("下拉刷新").findOne().parent().parent();
@@ -134,12 +147,16 @@ if (tjzf) {
             break
         }
         if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
-            className("com.uc.webview.export.WebView").waitFor();
-            sleep(3000);
-            desc("菜单").findOne().click();
-            sleep(500);
-            desc("分享").findOne().click();
-            text("微信好友").findOne().parent().click();
+            let cur_act = currentActivity();
+            if(cur_act = "com.ucpro.BrowserActivity"){
+                fInfo("检测到当前界面为夸克浏览器")
+                className("com.uc.webview.export.WebView").waitFor();
+                sleep(3000);
+                desc("菜单").findOne().click();
+                sleep(500);
+                desc("分享").findOne().click();
+                text("微信好友").findOne().parent().click();
+            }
             text("文件传输助手").findOne().parent().click();
             text("分享").findOne().click();
             text("留在微信").findOne().click();
