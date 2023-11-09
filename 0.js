@@ -105,8 +105,13 @@ if (tjzf) {
     text("统计").findOne().parent().parent().click();
     sleep(2000);
     textStartsWith("toutiao").findOne().parent().parent().click();
-    let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
-    toastLog("检测到" + task_zf + "个未做任务")
+    try {
+        let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
+        toastLog("检测到" + task_zf + "个未做任务")
+    } catch (e) {
+        toastLog("已完成全部任务");
+        finish();
+    }
     // if (text("推荐").exists()) {
     //     text("推荐").findOne().click();
     //     console.log("刷新任务列表成功")
@@ -196,6 +201,7 @@ if (zlpl) {
     var unloadbtn = text("0nB8zlsdwXuA6VDgFQvgkzC5KRdEAAAAAElFTkSuQmCC").find();
     if (unloadbtn.empty()) {
         toast("当前没有要做的任务");
+        finish();
     } else {
         let unloadNum = unloadbtn.find().size();
         fInfo("当前有" + unloadNum + "大项未作任务");
@@ -224,18 +230,36 @@ if (zlpl) {
                     break
                 }
             }
-            fInfo("正在做第" + (i + 1) + "轮转发任务");
-            let mediaflag = text("待上传").parent().parent().child(0).text();
-            text("待上传").parent().parent().child(2).click();
+            fInfo("正在做第" + (i + 1) + "轮评论任务");
+            let mediaflag = text("待上传").findOnce(j).parent().parent().child(0).text();
+            let tasktext = text(mediaflag).parent().child(1).text();
             if (mediaflag == "凤凰新闻") {
-                let tasktext = className("android.view.View").id("articleTitle").findOne().child(0).text().substr(0, 4);
-                desc("立即打开").findOne().click();
-                tasktext.waitFor();
-                text("我来说两句").findOne().click();
-
-
+                凤凰新闻();
+            } else if (mediaflag == "网易新闻") {
+                网易新闻();
+            } else if (mediaflag == "腾讯新闻") {
+                腾讯新闻();
+            } else if (mediaflag == "今日头条") {
+                今日头条();
+            } else if (mediaflag == "新浪新闻") {
+                新浪新闻();
+            } else if (mediaflag == "搜狐新闻") {
+                搜狐新闻();
+            } else if (mediaflag == "百度") {
+                百度();
             }
-
+            sleep(500);
+            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.6, 1000);
+            performGlobalAction(9)//模拟截屏
+            app.launchApp('记事本');
+            exit_app(mediaflag);//退出APP
+            back();
+            text(mediaflag).findOne().parent().child(3).click();
+            text("上传图片").findOne().click();
+            text("最近").waitFor();
+            descStartsWith("Screenshot").findOnce().child(0).child(3).click();
+            text(tasktext).waitFor();
+            text("提交保存").click();
 
 
         }
@@ -279,7 +303,7 @@ function finish() {
     home();
     exit();
 }
-/********双人、四人赛*********/
+
 
 // 模拟随机时间0.5-3秒，后期可以用户自定义
 function ran_sleep() {
@@ -455,4 +479,77 @@ function fRefocus() {
         });
     });
     sleep(500);
+}
+//模拟按键
+function performGlobalAction(action) {
+
+    //无障碍服务实例
+    let service = com.stardust.autojs.core.accessibility.AccessibilityService.Companion.getInstance();
+    if (!service) {
+        throw new Error("无障碍服务未开启或异常");
+    }
+    if (typeof(action) === 'number') {
+        return service.performGlobalAction(action);
+    }
+
+    // log(android.accessibilityservice.AccessibilityService[action])
+    return service.performGlobalAction(android.accessibilityservice.AccessibilityService[action]);
+    // const actionUpperCase = action.toUpperCase();
+    // return service.performGlobalAction(android.accessibilityservice.AccessibilityService['GLOBAL_ACTION_'+actionUpperCase]);
+}
+/*******************各种APP评论任务*******************/
+
+//凤凰新闻
+function 凤凰新闻 (){
+    text(mediaflag).findOne().parent().child(2).click();
+    desc("立即打开").findOne().click();
+    text(tasktext).waitFor();
+    sleep(500);
+    text("我来说两句").findOne().click();
+    text("友善评论，说点好听的～").waitFor();
+    setText(tasktext);
+    text("发送").findOne().click();
+}
+
+//网易新闻
+function 网易新闻 (){
+    text(mediaflag).findOne().parent().child(2).click();
+    desc("打开").findOne().parent().parent().parent().click();
+    text(tasktext).waitFor();
+    sleep(500);
+    id("com.netease.newsreader.activity:id/ce3").findOne().click();
+    text("写跟帖").waitFor();
+    setText(tasktext);
+    text("发送").findOne().click();
+}
+
+//腾讯新闻
+function 腾讯新闻 (){
+    text(mediaflag).findOne().parent().child(2).click();
+    text("获取全网一手热点打开").findOne().click();
+    text(tasktext).waitFor();
+    sleep(500);
+    id("com.tencent.news:id/action_bar_input").desc("发表评论").findOne().click();
+    text("优质评论将会被优先展示").waitFor();
+    setText(tasktext);
+    text("发布").findOne().click();
+    id("com.tencent.news:id/action_bar_comment").findOne().click();
+}
+
+//今日头条
+function 今日头条 (){
+    text(mediaflag).findOne().parent().child(2).click();
+    desc("打开APP").findOne().click();
+    text(tasktext).waitFor();
+    sleep(500);
+    desc("评论").findOne().click();
+    text("确认过眼神，你是发评人").parent().click();
+    desc("全屏编辑").waitFor();
+    setText(tasktext);
+    text("发布").findOne().click();
+    sleep(1000);
+    if(text("勾选「同时转发」有机会被推荐到头条首页").exists()){
+        className("android.widget.LinearLayout").findOnce().click();
+    }
+    text("发布").findOne().click();
 }
