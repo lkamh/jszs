@@ -173,6 +173,11 @@ if (tjzf) {
             sleep(500);
             swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
             sleep(3000);
+            back();
+            textStartsWith(sharetext).parent().parent().parent().longClick();
+            text("删除").findOne().parent().parent().click();
+            text("确认删除？").waitFor();
+            text("删除").click();
             app.launchApp('记事本');
             sleep(2000)
             fClear();
@@ -184,6 +189,9 @@ if (tjzf) {
         }
     }
 }
+
+
+
 
 //专栏评论上传截图任务
 if (zlpl) {
