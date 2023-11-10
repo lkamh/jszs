@@ -174,7 +174,7 @@ if (tjzf) {
             swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
             sleep(3000);
             back();
-            textStartsWith(sharetext).parent().parent().parent().longClick();
+            textStartsWith(sharetext).findOne().parent().parent().parent().longClick();
             text("删除").findOne().parent().parent().click();
             text("确认删除？").waitFor();
             text("删除").click();
