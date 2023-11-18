@@ -154,8 +154,9 @@ if (tjzf) {
         if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
             let cur_act = currentActivity();
             if(cur_act = "com.ucpro.BrowserActivity"){
-                fInfo("检测到当前界面为夸克浏览器")
+                fInfo("检测到当前界面为夸克浏览器");
                 className("com.uc.webview.export.WebView").waitFor();
+                textStartsWith(sharetext).waitFor();
                 sleep(3000);
                 desc("菜单").findOne().click();
                 sleep(500);
@@ -170,10 +171,11 @@ if (tjzf) {
             textStartsWith(sharetext).findOne().parent().parent().parent().click();
             sleep(1000);
             textStartsWith(sharetext).waitFor();
-            sleep(500);
+            sleep(1000);
             swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
             sleep(3000);
             back();
+            sleep(2000);
             textStartsWith(sharetext).findOne().parent().parent().parent().longClick();
             text("删除").findOne().parent().parent().click();
             text("确认删除？").waitFor();
@@ -232,7 +234,7 @@ if (zlpl) {
                 } else {
                     swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.8, 1000);
                 }
-                if (textStartsWith("待进行").findOne().text().slice(3, -1) = "0") {
+                if (textStartsWith("待进行").findOne().text().slice(3, -1) == "0") {
                     fInfo("已完成全部任务");
                     back();
                     break
