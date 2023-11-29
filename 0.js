@@ -12,7 +12,7 @@ var is_exit = true;//运行前退出app
 var jszs = storages.create("jszs");//加载存储
 var tjzf = jszs.get("tjzf", true);
 var zlpl = jszs.get("zlpl", true);
-
+var storage_user = jszs.get("old_wen_list", []);
 
 /*****************更新内容弹窗部分*****************/
 
@@ -192,6 +192,7 @@ if (tjzf) {
             while (!wen_box_slt.exists()) {
                 if(hd_times == 4){
                     toastLog("已完成推荐转发任务");
+                    jszs.put("old_wen_list", old_wen);
                 }
                 swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
                 sleep(200);
@@ -200,6 +201,7 @@ if (tjzf) {
             wen_box = wen_box_slt.findOne();
         }
     }
+    
 }
 
 // let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
