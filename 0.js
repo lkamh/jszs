@@ -68,7 +68,7 @@ var nologin_thread = threads.start(function () {
     fInfo("自动点击发送验证码");
     desc("发送验证码").findOne().click();
     text("我同意").click();
-  });
+});
 
 
 /*******************运行部分*******************/
@@ -99,19 +99,20 @@ sleep(2000);
 //     b = a;
 //     fInfo("循环滑动中")
 // }
+try {
+    let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
+    toastLog("检测到" + task_zf + "个未做任务");
+} catch (e) {
+    toastLog("已完成全部任务");
+    finish();
+}
 if (tjzf) {
     // fInfo("尝试点击推荐按钮");
-    fInfo("刷新任务列表");
-    text("统计").findOne().parent().parent().click();
-    sleep(2000);
-    textStartsWith("toutiao").findOne().parent().parent().click();
-    try {
-        let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
-        toastLog("检测到" + task_zf + "个未做任务")
-    } catch (e) {
-        toastLog("已完成全部任务");
-        finish();
-    }
+    // fInfo("刷新任务列表");
+    // text("统计").findOne().parent().parent().click();
+    // sleep(2000);
+    // textStartsWith("toutiao").findOne().parent().parent().click();
+    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 2000);
     // if (text("推荐").exists()) {
     //     text("推荐").findOne().click();
     //     console.log("刷新任务列表成功")
@@ -120,40 +121,44 @@ if (tjzf) {
     //     swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
     // }
     sleep(3000);
+
+
     //推荐转发任务
     for (let i = 0; ; i++) {
         fClear();
         sleep(2000);
         fInfo("正在做第" + (i + 1) + "轮转发任务");
-        let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
-        try {
-            let lisbtn = sharebtn.parent().parent().parent();
-            var listNum = sharebtn.parent().parent().parent().childCount();
-        } catch (error) {
-            fInfo("已完成全部任务")
-        }
-        console.log(listNum);
-        let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
-        console.log(sharetext);
-        if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
-            console.log("正在做置顶任务");
-            if(listNum == 7){
-                fInfo("已完成该任务");
-                continue;
+        let old_wen = storage_user.get("old_wen_list", []);
+        // 自定义没有刷过的文章筛选器
+        let wen_box_slt = className("android.view.ViewGroup").depth(13).filter(function (l) {
+            let title = l.child(1).findOne();
+            let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
+            if (share) {
+                return !sh_finish && old_wen.indexOf(title.text()) == -1
             }
-            listNum = listNum - 1;
-            console.log("listNum重置为" + listNum);
-            sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
-            console.log("sharetext重置为" + sharetext);
+            return false;
+        });
+        log("查找任务");
+        while (!wen_box_slt.findOne(500)) {
+            swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.6, 1000);
+            //sleep(500);
         }
-
-        if ((sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5)||listNum == 5) {
-            fInfo("已完成全部转发任务");
-            break
-        }
-        if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
+        log("找到任务");
+        let wen_box = wen_box_slt.findOne();
+        let wen_num = 0;
+        while (true) {
+            let title = l.child(1).findOne();
+            old_wen.push(title);
+            if (old_wen.length > 100) {
+                old_wen.shift();
+            }
+            fClear();
+            fInfo("点击文章：" + title);
+            let title_click = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg==")).click();
+            fInfo("点击：" + title_click);
+            fInfo("检查浏览器名称");
             let cur_act = currentActivity();
-            if(cur_act = "com.ucpro.BrowserActivity"){
+            if (cur_act = "com.ucpro.BrowserActivity") {
                 fInfo("检测到当前界面为夸克浏览器");
                 className("com.uc.webview.export.WebView").waitFor();
                 textStartsWith(sharetext).waitFor();
@@ -183,14 +188,48 @@ if (tjzf) {
             app.launchApp('记事本');
             sleep(2000)
             fClear();
-            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
-        } else {
-            toastLog("已完成推荐栏目转发任务");
-            finish();
-            break
+            let hd_times = 0;
+            while (!wen_box_slt.exists()) {
+                if(hd_times == 4){
+                    toastLog("已完成推荐转发任务");
+                }
+                swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+                sleep(200);
+                hd_times ++;
+            }
+            wen_box = wen_box_slt.findOne();
         }
     }
 }
+
+// let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
+// try {
+//     let lisbtn = sharebtn.parent().parent().parent();
+//     var listNum = sharebtn.parent().parent().parent().childCount();
+// } catch (error) {
+//     fInfo("已完成全部任务")
+// }
+// console.log(listNum);
+// let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
+// console.log(sharetext);
+// if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
+//     console.log("正在做置顶任务");
+//     if(listNum == 7){
+//         fInfo("已完成该任务");
+//         continue;
+//     }
+//     listNum = listNum - 1;
+//     console.log("listNum重置为" + listNum);
+//     sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
+//     console.log("sharetext重置为" + sharetext);
+// }
+
+// if ((sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5)||listNum == 5) {
+//     fInfo("已完成全部转发任务");
+//     break
+// }
+// if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
+
 
 
 
@@ -276,7 +315,7 @@ if (zlpl) {
 
     }
 }
-if(tjzf){
+if (tjzf) {
     textStartsWith("toutiao").findOne().parent().parent().click();
     sleep(2000);
 }
@@ -498,7 +537,7 @@ function performGlobalAction(action) {
     if (!service) {
         throw new Error("无障碍服务未开启或异常");
     }
-    if (typeof(action) === 'number') {
+    if (typeof (action) === 'number') {
         return service.performGlobalAction(action);
     }
 
@@ -510,7 +549,7 @@ function performGlobalAction(action) {
 /*******************各种APP评论任务*******************/
 
 //凤凰新闻
-function 凤凰新闻 (){
+function 凤凰新闻() {
     text(mediaflag).findOne().parent().child(2).click();
     desc("立即打开").findOne().click();
     text(tasktext).waitFor();
@@ -522,7 +561,7 @@ function 凤凰新闻 (){
 }
 
 //网易新闻
-function 网易新闻 (){
+function 网易新闻() {
     text(mediaflag).findOne().parent().child(2).click();
     desc("打开").findOne().parent().parent().parent().click();
     text(tasktext).waitFor();
@@ -534,7 +573,7 @@ function 网易新闻 (){
 }
 
 //腾讯新闻
-function 腾讯新闻 (){
+function 腾讯新闻() {
     text(mediaflag).findOne().parent().child(2).click();
     text("获取全网一手热点打开").findOne().click();
     text(tasktext).waitFor();
@@ -547,7 +586,7 @@ function 腾讯新闻 (){
 }
 
 //今日头条
-function 今日头条 (){
+function 今日头条() {
     text(mediaflag).findOne().parent().child(2).click();
     desc("打开APP").findOne().click();
     text(tasktext).waitFor();
@@ -558,7 +597,7 @@ function 今日头条 (){
     setText(tasktext);
     text("发布").findOne().click();
     sleep(1000);
-    if(text("勾选「同时转发」有机会被推荐到头条首页").exists()){
+    if (text("勾选「同时转发」有机会被推荐到头条首页").exists()) {
         className("android.widget.LinearLayout").findOnce().click();
     }
     text("发布").findOne().click();
