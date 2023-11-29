@@ -130,7 +130,7 @@ if (tjzf) {
         fInfo("正在做第" + (i + 1) + "轮转发任务");
         let old_wen = storage_user;
         // 自定义没有刷过的文章筛选器
-        let wen_box_slt = className("android.view.ViewGroup").depth(13).filter(function (l) {
+        let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
             let title = l.child(1).findOne();
             let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
             if (share) {
@@ -140,7 +140,7 @@ if (tjzf) {
         });
         log("查找任务");
         while (!wen_box_slt.findOne(500)) {
-            swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.6, 1000);
+            swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
             //sleep(500);
         }
         log("找到任务");
