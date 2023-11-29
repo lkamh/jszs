@@ -128,7 +128,7 @@ if (tjzf) {
         fClear();
         sleep(2000);
         fInfo("正在做第" + (i + 1) + "轮转发任务");
-        let old_wen = storage_user.get("old_wen_list", []);
+        let old_wen = storage_user;
         // 自定义没有刷过的文章筛选器
         let wen_box_slt = className("android.view.ViewGroup").depth(13).filter(function (l) {
             let title = l.child(1).findOne();
