@@ -134,7 +134,7 @@ if (tjzf) {
             let title = l.child(1).findOne();
             let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
             if (share) {
-                return !sh_finish && old_wen.indexOf(title.text()) == -1
+                return old_wen.indexOf(title.text()) == -1;
             }
             return false;
         });
