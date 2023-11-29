@@ -131,8 +131,8 @@ if (tjzf) {
         let old_wen = storage_user;
         // 自定义没有刷过的文章筛选器
         let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
-            let title = l.child(1).findOne();
             let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
+            let title = l.child(1).findOne();
             if (share) {
                 return old_wen.indexOf(title.text()) == -1;
             }
