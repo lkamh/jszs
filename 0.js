@@ -12,7 +12,7 @@ var is_exit = true;//运行前退出app
 var jszs = storages.create("jszs");//加载存储
 var tjzf = jszs.get("tjzf", true);
 var zlpl = jszs.get("zlpl", true);
-var storage_user = jszs.get("old_wen_list", []);
+var old_wen = jszs.get("old_wen_list", []);
 
 /*****************更新内容弹窗部分*****************/
 
@@ -76,29 +76,14 @@ className("android.widget.ListView").waitFor();
 sleep(2000);
 className("android.widget.ListView").waitFor();
 fClear();
-nologin_thread.isAlive() && (nologin_thread.interrupt(), fInfo("终止位置权限弹窗检测"));
+nologin_thread.isAlive() && (nologin_thread.interrupt(), fInfo("终止登录弹窗检测"));
 fInfo("等待进入主界面");
 // textStartsWith("积分").waitFor();
 // sleep(2000);
 fInfo("获取任务列表");
 
-// var tasklist = text("下拉刷新").findOne().parent().parent();
-// var finishCode = "es1H5Q3OXksdzeyUJT6CrBGRb04xvA+W146fvn3S2T0+EtQ3HxeV8UN8+z1fAvyF8ppZ3C33YqXAAAAAElFTkSuQmCC";
-// var a = tasklist.childCount();
-// var b = "";
 sleep(2000);
-// //下拉到最后
-// while (tasklist) {
-//     swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.2, 1000);
-//     sleep(1000);
-//     a = tasklist.childCount();
-//     if (b == a) {
-//         fInfo("已获取全部任务")
-//         break
-//     }
-//     b = a;
-//     fInfo("循环滑动中")
-// }
+
 try {
     let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
     toastLog("检测到" + task_zf + "个未做任务");
@@ -107,102 +92,117 @@ try {
     finish();
 }
 if (tjzf) {
-    // fInfo("尝试点击推荐按钮");
-    // fInfo("刷新任务列表");
-    // text("统计").findOne().parent().parent().click();
-    // sleep(2000);
-    // textStartsWith("toutiao").findOne().parent().parent().click();
-    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 2000);
-    // if (text("推荐").exists()) {
-    //     text("推荐").findOne().click();
-    //     console.log("刷新任务列表成功")
-    // } else {
-    //     fInfo("点击失败，模拟滑动以更新任务列表")
-    //     swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
-    // }
+    sleep(1000);
+    //刷新任务列表
+    swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1500);
     sleep(3000);
-
-
     //推荐转发任务
-    for (let i = 0; ; i++) {
+    let old_wen = jszs.get("old_wen_list", []);
+    let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
+        //   let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
+        //   console.log(share)
+        let title = l.child(1);
+        console.log(title.text())
+        if (title) {
+            return title.text() != "下拉刷新" && title.text() != "没有更多数据" && old_wen.indexOf(title.text()) == -1;
+        }
+        return false;
+    });
+    for (let i = 1; ; i++) {
         fClear();
         sleep(2000);
-        fInfo("正在做第" + (i + 1) + "轮转发任务");
-        let old_wen = storage_user;
-        // 自定义没有刷过的文章筛选器
-        let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
-            let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
-            let title = l.child(1).findOne();
-            if (share) {
-                return old_wen.indexOf(title.text()) == -1;
-            }
-            return false;
-        });
-        log("查找任务");
+        fInfo("正在做第" + i + "轮转发任务");
+        //构建没有完成过的转发任务
+        log("查找转发任务");
+        console.log(wen_box_slt.findOne(1000));
         while (!wen_box_slt.findOne(500)) {
-            swipe(device_w / 2, device_h * 0.5, device_w / 2, device_h * 0.8, 1000);
-            //sleep(500);
-        }
+            for(let j = 1;j <= 3;j++){
+                swipe(device_w / 2, device_h * 0.7, device_w / 2, device_h * 0.6, 1000);
+                //sleep(500);
+                if(wen_box_slt.findOne(500)){
+                    break
+                }
+            }
+            toastLog("已完成全部转发任务");
+            finish();
+        } 
         log("找到任务");
         let wen_box = wen_box_slt.findOne();
-        let wen_num = 0;
-        while (true) {
-            let title = l.child(1).findOne();
-            old_wen.push(title);
-            if (old_wen.length > 100) {
-                old_wen.shift();
-            }
-            fClear();
-            fInfo("点击文章：" + title);
-            let title_click = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg==")).click();
-            fInfo("点击：" + title_click);
-            fInfo("检查浏览器名称");
-            let cur_act = currentActivity();
-            if (cur_act = "com.ucpro.BrowserActivity") {
-                fInfo("检测到当前界面为夸克浏览器");
-                className("com.uc.webview.export.WebView").waitFor();
-                textStartsWith(sharetext).waitFor();
-                sleep(3000);
-                desc("菜单").findOne().click();
-                sleep(500);
-                desc("分享").findOne().click();
-                text("微信好友").findOne().parent().click();
-            }
-            text("文件传输助手").findOne().parent().click();
-            text("分享").findOne().click();
-            text("留在微信").findOne().click();
-            text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
-            sleep(1000);
-            textStartsWith(sharetext).findOne().parent().parent().parent().click();
-            sleep(1000);
-            textStartsWith(sharetext).waitFor();
-            sleep(1000);
-            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+        let wen_share = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
+        let wen_title = wen_box.child(1).text();
+        old_wen.push(wen_title);
+        fInfo("文章任务:" + wen_title);
+        let share_click = wen_share.parent().click();
+        fInfo("点击：" + share_click);
+        fInfo("查找WebView");
+        className("com.uc.webview.export.WebView").depth(14).waitFor();
+        fClear();
+        fInfo("检查浏览器名称");
+        let title_short = wen_title.substr(0, 4);
+        log(title_short);
+        let cur_act = currentActivity();
+        if (cur_act = "com.ucpro.BrowserActivity") {
+            fInfo("检测到当前界面为夸克浏览器");
+            className("com.uc.webview.export.WebView").waitFor();
+            textStartsWith(title_short).waitFor();
             sleep(3000);
-            back();
-            sleep(2000);
-            textStartsWith(sharetext).findOne().parent().parent().parent().longClick();
-            text("删除").findOne().parent().parent().click();
-            text("确认删除？").waitFor();
-            text("删除").click();
-            app.launchApp('记事本');
-            sleep(2000)
-            fClear();
-            let hd_times = 0;
-            while (!wen_box_slt.exists()) {
-                if(hd_times == 4){
-                    toastLog("已完成推荐转发任务");
-                    jszs.put("old_wen_list", old_wen);
-                }
-                swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
-                sleep(200);
-                hd_times ++;
-            }
-            wen_box = wen_box_slt.findOne();
+            fInfo("点击菜单：" + desc("菜单").findOne().click());
+            sleep(500);
+            fInfo("点击分享：" + desc("分享").findOne().click())
+            text("微信好友").findOne().parent().click();
         }
+        text("文件传输助手").findOne().parent().click();
+        text("分享").findOne().click();
+        text("留在微信").findOne().click();
+        text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
+        sleep(1000);
+        fClear();
+        fInfo("点击浏览");
+        textStartsWith(title_short).findOne().parent().parent().parent().click();
+        sleep(1000);
+        fInfo("等待文章标题显现");
+        console.log(textContains(title_short).findOne(5000));
+        textStartsWith(title_short).waitFor();
+        sleep(1000);
+        fInfo("模拟滑动浏览");
+        textStartsWith(title_short).scrollForward();//先滑动一下，要不滑不动
+        swipe(device_w / 2, device_h * 0.7, device_w / 2, device_h * 0.5, 1500);
+        sleep(3000);
+        back();
+        sleep(2000);
+        fClear();
+        fInfo("模拟长按卡片")
+        let card_centerx = textStartsWith(wen_title).findOne().parent().bounds().centerX();
+        let card_centery = textStartsWith(wen_title).findOne().parent().bounds().centerY();
+        press(card_centerx, card_centery, 2000);
+        fInfo("删除分享卡片");
+        text("删除").findOne().parent().parent().click();
+        text("确认删除？").waitFor();
+        fInfo("删除：" + text("删除").findOne().click());
+        sleep(2000);
+        fClear();
+        app.launchApp('记事本');
+        sleep(2000)
+        fClear();
+        let hd_times = 0;
+        while (!wen_box_slt.exists()) {
+            if (hd_times == 4) {
+                toastLog("已完成全部推荐转发任务");
+                break;
+                finish();
+            }
+            swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
+            sleep(200);
+            hd_times++;
+        }
+        fInfo("保存文章标题到本地已读列表");
+        jszs.put("old_wen_list", old_wen);
+        swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.5, 1500);
+        wen_box = wen_box_slt.findOne();
     }
-    
 }
+
+
 
 // let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
 // try {
@@ -447,9 +447,6 @@ function exit_app(name) {
 }
 
 
-
-
-
 /*******************悬浮窗*******************/
 function fInit() {
     // ScrollView下只能有一个子布局
@@ -603,4 +600,25 @@ function 今日头条() {
         className("android.widget.LinearLayout").findOnce().click();
     }
     text("发布").findOne().click();
+}
+
+
+/*****************结束后配置*****************/
+function finish() {
+    fInfo("已全部结束");
+    // 调回原始音量
+
+    // 取消屏幕常亮
+    fInfo("取消屏幕常亮");
+    device.cancelKeepingAwake();
+    exit_app("记事本");
+
+    // 震动提示
+    device.vibrate(500);
+    fInfo("十秒后关闭悬浮窗");
+    device.cancelVibration();
+    sleep(10000);
+    console.hide();
+    home();
+    exit();
 }
