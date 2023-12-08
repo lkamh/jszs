@@ -101,10 +101,10 @@ if (tjzf) {
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
         let titleName = l.child(1).text();
         try {
-            let appName = l.child(2).child(2);
+            let appName = l.child(2).child(2).text();
             console.log(appName);
             var title = titleName + ":" + appName;
-            console.log(title)
+            console.log(title);
         } catch (error) {
             console.log("跳过筛选");
         }
@@ -143,6 +143,7 @@ if (tjzf) {
         let wen_title = wen_box.child(title_flag).text();
         let app_Name = wen_box.child(title_flag + 1).child(2).text();
         let wz_title = app_Name + ":" + wen_title;
+        console.log(wz_title);
         old_wen.push(wz_title);
         fInfo("文章任务:" + wen_title);
         let share_click = wen_share.parent().click();
@@ -154,7 +155,7 @@ if (tjzf) {
         log(title_short);
         let cur_act = currentActivity();
         while (!cur_act.includes("rowser")) {
-            console.log("获取当前活动名称");
+            // console.log("获取当前活动名称");
             cur_act = currentActivity();
         }
         sleep(3000);
@@ -202,39 +203,6 @@ if (tjzf) {
         wen_box = wen_box_slt.findOne();
     }
 }
-
-
-
-// let sharebtn = text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i);
-// try {
-//     let lisbtn = sharebtn.parent().parent().parent();
-//     var listNum = sharebtn.parent().parent().parent().childCount();
-// } catch (error) {
-//     fInfo("已完成全部任务")
-// }
-// console.log(listNum);
-// let sharetext = sharebtn.parent().parent().parent().child(1).text().substr(0, 4);
-// console.log(sharetext);
-// if(sharebtn.parent().parent().parent().child(1).text() == "置顶"){
-//     console.log("正在做置顶任务");
-//     if(listNum == 7){
-//         fInfo("已完成该任务");
-//         continue;
-//     }
-//     listNum = listNum - 1;
-//     console.log("listNum重置为" + listNum);
-//     sharetext = sharebtn.parent().parent().parent().child(2).text().substr(0, 4);
-//     console.log("sharetext重置为" + sharetext);
-// }
-
-// if ((sharebtn.parent().parent().parent().child(1).text() == "置顶" && listNum == 5)||listNum == 5) {
-//     fInfo("已完成全部转发任务");
-//     break
-// }
-// if (!(text("gYGPl0wKyfOvgAAAABJRU5ErkJggg==").findOnce(i).click() == null)) {
-
-
-
 
 
 //专栏评论上传截图任务
