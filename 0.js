@@ -103,7 +103,7 @@ if (tjzf) {
         try {
             let appName = l.child(2).child(2).text();
             console.log(appName);
-            var title = titleName + ":" + appName;
+            var title = appName + ":" + titleName;
             console.log(title);
         } catch (error) {
             console.log("跳过筛选");
