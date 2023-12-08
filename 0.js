@@ -134,9 +134,14 @@ if (tjzf) {
         log("找到任务");
         fInfo("正在做第" + i + "轮转发任务");
         let wen_box = wen_box_slt.findOne();
+        let title_flag = 1;
+        if(wen_box.child(1).text() == "置顶"){
+            toastLog("正在做置顶任务");
+            title_flag = 2;
+        }
         let wen_share = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
-        let wen_title = wen_box.child(1).text();
-        let app_Name = wen_box.child(2).child(2).text();
+        let wen_title = wen_box.child(title_flag).text();
+        let app_Name = wen_box.child(title_flag+1).child(2).text();
         let wz_title = app_Name + ":" + wen_title;
         old_wen.push(wz_title);
         fInfo("文章任务:" + wen_title);
