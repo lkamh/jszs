@@ -189,7 +189,6 @@ if (tjzf) {
         while (!wen_box_slt.exists()) {
             if (hd_times == 3) {
                 toastLog("已完成全部推荐转发任务");
-                break;
                 finish();
             }
             swipe(device_w / 2, device_h * 0.8, device_w / 2, device_h * 0.7, 1000);
