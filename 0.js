@@ -88,6 +88,7 @@ try {
     let task_zf = textStartsWith("toutiao").findOne().parent().child(1).text();
     toastLog("检测到" + task_zf + "个未做任务");
 } catch (e) {
+    console.log(e);
     toastLog("已完成全部任务");
     finish();
 }
