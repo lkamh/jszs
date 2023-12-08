@@ -114,6 +114,7 @@ if (tjzf) {
         fInfo("正在做第" + i + "轮转发任务");
         //构建没有完成过的转发任务
         log("查找转发任务");
+        console.log(wen_box_slt.exists());
         console.log(wen_box_slt.findOne(1000));
         while (!wen_box_slt.findOne(500)) {
             for(let j = 1;j <= 3;j++){
@@ -186,7 +187,7 @@ if (tjzf) {
         fClear();
         let hd_times = 0;
         while (!wen_box_slt.exists()) {
-            if (hd_times == 4) {
+            if (hd_times == 3) {
                 toastLog("已完成全部推荐转发任务");
                 break;
                 finish();
@@ -197,7 +198,6 @@ if (tjzf) {
         }
         fInfo("保存文章标题到本地已读列表");
         jszs.put("old_wen_list", old_wen);
-        swipe(device_w / 2, device_h * 0.6, device_w / 2, device_h * 0.5, 1500);
         wen_box = wen_box_slt.findOne();
     }
 }
