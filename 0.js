@@ -89,7 +89,7 @@ try {
 } catch (e) {
     console.log(e);
     toastLog("已完成全部任务");
-    finish();
+    // finish();
 }
 if (tjzf) {
     sleep(1000);
