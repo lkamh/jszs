@@ -101,7 +101,9 @@ if (tjzf) {
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
         //   let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
         //   console.log(share)
-        let title = l.child(1);
+        let titleName = l.child(1);
+        let appName = l.child(2).child(2).text();
+        let title = titleName + appName;
         console.log(title.text())
         if (title) {
             return title.text() != "下拉刷新" && title.text() != "没有更多数据" && old_wen.indexOf(title.text()) == -1;
@@ -111,22 +113,22 @@ if (tjzf) {
     for (let i = 1; ; i++) {
         fClear();
         sleep(2000);
-        fInfo("正在做第" + i + "轮转发任务");
         //构建没有完成过的转发任务
         log("查找转发任务");
         console.log(wen_box_slt.exists());
         console.log(wen_box_slt.findOne(1000));
         while (!wen_box_slt.findOne(500)) {
-            for(let j = 1;j <= 3;j++){
+            for (let j = 1; j <= 3; j++) {
                 swipe(device_w / 2, device_h * 0.7, device_w / 2, device_h * 0.6, 1000);
                 //sleep(500);
-                if(wen_box_slt.findOne(500)){
+                if (wen_box_slt.findOne(500)) {
                     break
                 }
             }
             toastLog("已完成全部转发任务");
             finish();
-        } 
+        }
+        fInfo("正在做第" + i + "轮转发任务");
         log("找到任务");
         let wen_box = wen_box_slt.findOne();
         let wen_share = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
@@ -142,48 +144,34 @@ if (tjzf) {
         let title_short = wen_title.substr(0, 4);
         log(title_short);
         let cur_act = currentActivity();
-        if (cur_act = "com.ucpro.BrowserActivity") {
+        if (cur_act == "com.ucpro.BrowserActivity") {
             fInfo("检测到当前界面为夸克浏览器");
             className("com.uc.webview.export.WebView").waitFor();
             textStartsWith(title_short).waitFor();
             sleep(3000);
             fInfo("点击菜单：" + desc("菜单").findOne().click());
             sleep(500);
-            fInfo("点击分享：" + desc("分享").findOne().click())
+            fInfo("点击分享：" + desc("分享").findOne().click());
+            sleep(500);
             text("微信好友").findOne().parent().click();
+            sleep(500);
+            forward(title_short);
+        }else if(cur_act == "com.huawei.browser.BrowserMainActivity"){
+            fInfo("检测到当前界面为华为浏览器");
+            className("com.huawei.android.webview.chromium.hwwebview.HwWebView").waitFor();
+            sleep(3000);
+            fInfo("点击菜单：" + desc("更多").findOne().click());
+            sleep(500);
+            fInfo("点击分享：" + id("com.huawei.browser:id/menu_share").text("分享").findOne().click());
+            sleep(500);
+            text("微信").className("android.widget.Button").findOne().click();
+            sleep(500);
+            forward(title_short);
+        }else{
+            fError("未支持当前浏览器，请联系管理员处理");
+            sleep(5000);
+            finish();
         }
-        text("文件传输助手").findOne().parent().click();
-        text("分享").findOne().click();
-        text("留在微信").findOne().click();
-        text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
-        sleep(1000);
-        fClear();
-        fInfo("点击浏览");
-        textStartsWith(title_short).findOne().parent().parent().parent().click();
-        sleep(1000);
-        fInfo("等待文章标题显现");
-        console.log(textContains(title_short).findOne(5000));
-        textStartsWith(title_short).waitFor();
-        sleep(1000);
-        fInfo("模拟滑动浏览");
-        textStartsWith(title_short).scrollForward();//先滑动一下，要不滑不动
-        swipe(device_w / 2, device_h * 0.7, device_w / 2, device_h * 0.5, 1500);
-        sleep(3000);
-        back();
-        sleep(2000);
-        fClear();
-        fInfo("模拟长按卡片")
-        let card_centerx = textStartsWith(wen_title).findOne().parent().bounds().centerX();
-        let card_centery = textStartsWith(wen_title).findOne().parent().bounds().centerY();
-        press(card_centerx, card_centery, 2000);
-        fInfo("删除分享卡片");
-        text("删除").findOne().parent().parent().click();
-        text("确认删除？").waitFor();
-        fInfo("删除：" + text("删除").findOne().click());
-        sleep(2000);
-        fClear();
-        app.launchApp('记事本');
-        sleep(2000)
         fClear();
         let hd_times = 0;
         while (!wen_box_slt.exists()) {
@@ -599,6 +587,42 @@ function 今日头条() {
         className("android.widget.LinearLayout").findOnce().click();
     }
     text("发布").findOne().click();
+}
+
+/*****************操作函数*****************/
+function forward(title_short) {
+    text("文件传输助手").findOne().parent().click();
+    text("分享").findOne().click();
+    text("留在微信").findOne().click();
+    text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
+    sleep(1000);
+    fClear();
+    fInfo("点击浏览");
+    textStartsWith(title_short).findOne().parent().parent().parent().click();
+    sleep(1000);
+    fInfo("等待文章标题显现");
+    console.log(textContains(title_short).findOne(5000));
+    textStartsWith(title_short).waitFor();
+    sleep(1000);
+    fInfo("模拟滑动浏览");
+    textStartsWith(title_short).scrollForward();//先滑动一下，要不滑不动
+    swipe(device_w / 2, device_h * 0.7, device_w / 2, device_h * 0.5, 1500);
+    sleep(3000);
+    back();
+    sleep(2000);
+    fClear();
+    fInfo("模拟长按卡片")
+    let card_centerx = textStartsWith(wen_title).findOne().parent().bounds().centerX();
+    let card_centery = textStartsWith(wen_title).findOne().parent().bounds().centerY();
+    press(card_centerx, card_centery, 2000);
+    fInfo("删除分享卡片");
+    text("删除").findOne().parent().parent().click();
+    text("确认删除？").waitFor();
+    fInfo("删除：" + text("删除").findOne().click());
+    sleep(2000);
+    fClear();
+    app.launchApp('记事本');
+    sleep(2000)
 }
 
 
