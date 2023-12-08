@@ -118,7 +118,7 @@ ui.emitter.on("options_item_selected", (e, item) => {
             app.startActivity("console");
             break;
         case "关于":
-            alert("关于", "学习助手辅助刷题工具");
+            alert("关于", "记事本辅助工具");
             break;
     }
     e.consumed = true;
