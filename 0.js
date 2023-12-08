@@ -190,7 +190,7 @@ if (tjzf) {
             sleep(500);
             forward(title_short);
         }else{
-            fError("未支持当前浏览器，请联系管理员处理");
+            fError("未支持当前浏览器，请联系作者处理");
             sleep(5000);
             finish();
         }
