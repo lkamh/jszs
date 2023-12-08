@@ -103,7 +103,8 @@ if (tjzf) {
         //   let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
         //   console.log(share)
         let titleName = l.child(1).text();
-        let appName = l.child(2).child(2).text();
+        let appName = l.child(2).child(2);
+        console.log(appName);
         let title = titleName + ":" + appName;
         console.log(title)
         if (title) {
