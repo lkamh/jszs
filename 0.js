@@ -148,7 +148,6 @@ if (tjzf) {
         let share_click = wen_share.parent().click();
         fInfo("点击：" + share_click);
         fInfo("查找WebView");
-        className("com.uc.webview.export.WebView").depth(14).waitFor();
         fClear();
         fInfo("检查浏览器名称");
         let title_short = wen_title.substr(0, 4);
