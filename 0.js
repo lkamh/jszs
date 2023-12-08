@@ -78,7 +78,7 @@ className("android.widget.ListView").waitFor();
 fClear();
 nologin_thread.isAlive() && (nologin_thread.interrupt(), fInfo("终止登录弹窗检测"));
 fInfo("等待进入主界面");
-// textStartsWith("积分").waitFor();
+textStartsWith("积分").waitFor();
 // sleep(2000);
 fInfo("获取任务列表");
 
