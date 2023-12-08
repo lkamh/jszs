@@ -102,6 +102,8 @@ if (tjzf) {
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
         if (l.child(1).text() == "置顶"){
             title_flag = 2;
+        }else{
+            title_flag = 1;
         }
         let titleName = l.child(title_flag).text();
         try {
