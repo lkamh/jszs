@@ -36,7 +36,7 @@ ui.layout(
                                     {/* <text text="【任务选择列表】" textSize="16sp" textColor="#f58220" /> */}
                                     <checkbox id="cb1" checked="true" text="头条：推荐转发任务" />
                                     <checkbox id="cb2" checked="true" text="头条：专栏评论任务" />
-                                    <checkbox id="cb3" checked="true" text="更多任务..." enabled="false" />
+                                    {/* <checkbox id="cb3" checked="true" text="更多任务..." enabled="false" /> */}
                                 </vertical>
                             </vertical>
                         </card>
