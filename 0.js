@@ -626,8 +626,8 @@ function forward(title_short) {
     sleep(2000);
     fClear();
     fInfo("模拟长按卡片")
-    let card_centerx = textStartsWith(wen_title).findOne().parent().bounds().centerX();
-    let card_centery = textStartsWith(wen_title).findOne().parent().bounds().centerY();
+    let card_centerx = textStartsWith(title_short).findOne().parent().bounds().centerX();
+    let card_centery = textStartsWith(title_short).findOne().parent().bounds().centerY();
     press(card_centerx, card_centery, 2000);
     fInfo("删除分享卡片");
     text("删除").findOne().parent().parent().click();
