@@ -89,7 +89,7 @@ try {
 } catch (e) {
     console.log(e);
     toastLog("已完成全部任务");
-    // finish();
+    finish();
 }
 if (tjzf) {
     sleep(1000);
@@ -205,7 +205,7 @@ if (tjzf) {
             sleep(200);
             hd_times++;
         }
-        fInfo("保存文章标题到本地已读列表");
+        // fInfo("保存文章标题到本地已读列表");
         jszs.put("old_wen_list", old_wen);
         wen_box = wen_box_slt.findOne();
     }
