@@ -98,14 +98,19 @@ if (tjzf) {
     sleep(3000);
     //推荐转发任务
     let old_wen = jszs.get("old_wen_list", []);
+    var title_flag = 1;
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
-        let titleName = l.child(1).text();
+        if (l.child(1).text() == "置顶"){
+            title_flag = 2;
+        }
+        let titleName = l.child(title_flag).text();
         try {
             let appName = l.child(title_flag + 1).child(2).text();
             console.log(appName);
             var title = appName + ":" + titleName;
             console.log(title);
         } catch (error) {
+            console.log(error);
             console.log("跳过筛选");
         }
         if (title) {
@@ -134,7 +139,7 @@ if (tjzf) {
         log("找到任务");
         fInfo("正在做第" + i + "轮转发任务");
         let wen_box = wen_box_slt.findOne();
-        var title_flag = 1;
+        title_flag = 1;
         if(wen_box.child(1).text() == "置顶"){
             toastLog("正在做置顶任务");
             title_flag = 2;
