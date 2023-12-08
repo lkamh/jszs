@@ -26,22 +26,22 @@ fInfo("记事助手" + "脚本初始化");
 var [device_w, device_h] = init_wh();//init_wh()是返回设备宽和高的函数
 
 // 自动允许权限进程
-threads.start(function () {
-    //在新线程执行的代码
-    toastLog("开始自动获取截图权限");
-    var btn = className("android.widget.Button").textMatches(/允许|立即开始|START NOW/).findOne(5000);
-    if (btn) {
-        sleep(1000);
-        btn.click();
-    }
-    toastLog("结束获取截图权限");
-});
-fInfo("请求截图权限");
-// 请求截图权限、似乎请求两次会失效
-if (!requestScreenCapture(false)) { // false为竖屏方向
-    fError('请求截图失败');
-    exit();
-}
+// threads.start(function () {
+//     //在新线程执行的代码
+//     toastLog("开始自动获取截图权限");
+//     var btn = className("android.widget.Button").textMatches(/允许|立即开始|START NOW/).findOne(5000);
+//     if (btn) {
+//         sleep(1000);
+//         btn.click();
+//     }
+//     toastLog("结束获取截图权限");
+// });
+// fInfo("请求截图权限");
+// // 请求截图权限、似乎请求两次会失效
+// if (!requestScreenCapture(false)) { // false为竖屏方向
+//     fError('请求截图失败');
+//     exit();
+// }
 // 防止设备息屏
 fInfo("设置屏幕常亮");
 device.keepScreenOn(3600 * 1000);
@@ -89,7 +89,7 @@ try {
 } catch (e) {
     console.log(e);
     toastLog("已完成全部任务");
-    // finish();
+    finish();
 }
 if (tjzf) {
     sleep(1000);
@@ -141,7 +141,7 @@ if (tjzf) {
         }
         let wen_share = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
         let wen_title = wen_box.child(title_flag).text();
-        let app_Name = wen_box.child(title_flag+1).child(2).text();
+        let app_Name = wen_box.child(title_flag + 1).child(2).text();
         let wz_title = app_Name + ":" + wen_title;
         old_wen.push(wz_title);
         fInfo("文章任务:" + wen_title);
@@ -154,6 +154,7 @@ if (tjzf) {
         log(title_short);
         let cur_act = currentActivity();
         while (!cur_act.includes("rowser")) {
+            console.log("获取当前活动名称");
             cur_act = currentActivity();
         }
         sleep(3000);
