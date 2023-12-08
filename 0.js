@@ -101,12 +101,12 @@ if (tjzf) {
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
         //   let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
         //   console.log(share)
-        let titleName = l.child(1);
+        let titleName = l.child(1).text();
         let appName = l.child(2).child(2).text();
-        let title = titleName + appName;
-        console.log(title.text())
+        let title = titleName + ":" + appName;
+        console.log(title)
         if (title) {
-            return title.text() != "下拉刷新" && title.text() != "没有更多数据" && old_wen.indexOf(title.text()) == -1;
+            return title != "下拉刷新" && title != "没有更多数据" && old_wen.indexOf(title) == -1;
         }
         return false;
     });
@@ -128,12 +128,14 @@ if (tjzf) {
             toastLog("已完成全部转发任务");
             finish();
         }
-        fInfo("正在做第" + i + "轮转发任务");
         log("找到任务");
+        fInfo("正在做第" + i + "轮转发任务");
         let wen_box = wen_box_slt.findOne();
         let wen_share = wen_box.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
         let wen_title = wen_box.child(1).text();
-        old_wen.push(wen_title);
+        let app_Name = wen_box.child(2).child(2).text();
+        let wz_title = app_Name + ":" + wen_title;
+        old_wen.push(wz_title);
         fInfo("文章任务:" + wen_title);
         let share_click = wen_share.parent().click();
         fInfo("点击：" + share_click);
