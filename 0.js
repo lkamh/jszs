@@ -153,7 +153,9 @@ if (tjzf) {
         let title_short = wen_title.substr(0, 4);
         log(title_short);
         let cur_act = currentActivity();
-        while (!cur_act.includes("rowser")) {}
+        while (!cur_act.includes("rowser")) {
+            cur_act = currentActivity();
+        }
         sleep(3000);
         if (cur_act == "com.ucpro.BrowserActivity") {
             fInfo("检测到当前界面为夸克浏览器");
