@@ -74,7 +74,6 @@ var nologin_thread = threads.start(function () {
 /*******************运行部分*******************/
 className("android.widget.ListView").waitFor();
 sleep(2000);
-className("android.widget.ListView").waitFor();
 fClear();
 nologin_thread.isAlive() && (nologin_thread.interrupt(), fInfo("终止登录弹窗检测"));
 fInfo("等待进入主界面");
@@ -100,13 +99,15 @@ if (tjzf) {
     //推荐转发任务
     let old_wen = jszs.get("old_wen_list", []);
     let wen_box_slt = className("android.view.View").depth(13).filter(function (l) {
-        //   let share = l.findOne(textContains("gYGPl0wKyfOvgAAAABJRU5ErkJggg=="));
-        //   console.log(share)
         let titleName = l.child(1).text();
-        let appName = l.child(2).child(2);
-        console.log(appName);
-        let title = titleName + ":" + appName;
-        console.log(title)
+        try {
+            let appName = l.child(2).child(2);
+            console.log(appName);
+            var title = titleName + ":" + appName;
+            console.log(title)
+        } catch (error) {
+            console.log("跳过筛选");
+        }
         if (title) {
             return title != "下拉刷新" && title != "没有更多数据" && old_wen.indexOf(title) == -1;
         }
