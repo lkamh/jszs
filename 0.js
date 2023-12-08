@@ -89,7 +89,7 @@ try {
 } catch (e) {
     console.log(e);
     toastLog("已完成全部任务");
-    // finish();
+    finish();
 }
 if (tjzf) {
     sleep(1000);
@@ -581,8 +581,11 @@ function 今日头条() {
 /*****************操作函数*****************/
 function forward(title_short) {
     text("文件传输助手").findOne().parent().click();
+    sleep(500);
     text("分享").findOne().click();
+    sleep(500);
     text("留在微信").findOne().click();
+    sleep(500);
     text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
     sleep(1000);
     fClear();
