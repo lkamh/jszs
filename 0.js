@@ -585,8 +585,10 @@ function forward(title_short) {
     text("分享").findOne().click();
     sleep(500);
     text("留在微信").findOne().click();
-    sleep(500);
-    text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
+    text("文件传输助手").waitFor();
+    sleep(1500);
+    let wjcs_click = text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
+    fInfo("点击文件传输助手:" + wjcs_click);
     sleep(1000);
     fClear();
     fInfo("点击浏览");
