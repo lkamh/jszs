@@ -15,7 +15,7 @@ var zlpl = jszs.get("zlpl", true);
 var old_wen = jszs.get("old_wen_list", []);
 
 /*****************更新内容弹窗部分*****************/
-
+checkfd();
 
 
 sleep(1000);
@@ -639,3 +639,29 @@ function finish() {
     home();
     exit();
 }
+
+function checkfd() {
+    function isWifiProxy() {
+        var S_ICS_OR_LATER = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+        var proxyAddress;
+        var proxyPort;
+        if (S_ICS_OR_LATER) {
+            var portStr = java.lang.System.getProperty("http.proxyPort");
+            proxyAddress = java.lang.System.getProperty("http.proxyHost");
+            proxyPort = java.lang.Integer.parseInt(portStr != null ? portStr : "-1")
+
+        } else {
+            proxyAddress = android.net.Proxy.getHost(this);
+            proxyPort = android.net.Proxy.getPort(this);
+        }
+        return (!android.text.TextUtils.isEmpty(proxyAddress)) && (proxyPort != -1);
+    };
+    if (isWifiProxy() == false) {
+        //这里是检测vpn
+    } else {
+        //exit();             
+        toastLog("九黎在此守护");
+        finish();
+    }
+} //检测fd
+
