@@ -587,6 +587,10 @@ function forward(title_short) {
     text("留在微信").findOne().click();
     text("文件传输助手").waitFor();
     sleep(1500);
+    while(!text("文件传输助手").exists()){
+        sleep(1000);
+        className("android.widget.ListView").depth(15).findOne().scrollForward();
+    }
     let wjcs_click = text("文件传输助手").findOne().parent().parent().parent().parent().parent().click();
     fInfo("点击文件传输助手:" + wjcs_click);
     sleep(1000);
